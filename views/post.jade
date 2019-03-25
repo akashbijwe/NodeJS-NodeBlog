@@ -1,0 +1,55 @@
+extends layout
+
+block content
+  h1= title
+  .row
+    if post
+      .col-md-12.col-sm-12
+        .card
+          img.card-img-top(src="/images/download.svg", alt="Card image cap")  
+          .card-body
+            h5.card-title= post.title
+            p.card-text
+              =post.body
+            div
+              small.text-muted 
+                strong Author:
+                = post.author
+            div
+              small.text-muted
+                strong Category:
+                a(href='/categories/show/#{post.category}') #{post.category}
+            div
+              small.text-muted
+                strong date:
+                  = moment(post.date).format('DD-MM-YYYY')
+            if post.comments
+              hr
+              h3 comments 
+              each comment, i in post.comments
+                .row
+                  p
+                    = comment.name
+                  p
+                    = comment.body
+            
+            br
+            h3 Add Commments
+            if errors
+              ul.errors
+                each error, i in errors
+                  li.alert.alert-danger #{error.msg}
+            br
+            form(method="post", action='/posts/addComment')
+              input(name='postId', type='hidden', value='#{post._id}')
+              .form-group
+                input.form-control(type='text', name='name', placeholder="Name")
+              .form-group
+                input.form-control(type='text', name='email', placeholder="Email")
+              .form-group
+                textarea.form-control(name='body', placeholder="Body", id='body')
+              .form-group
+                input.btn.btn-primary(type='submit', name='Submit', value='Add Comment')
+    else
+      blockquote.blockquote.text-center
+        .lead Loading...

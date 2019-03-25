@@ -1,0 +1,31 @@
+extends layout
+
+block content
+  h1= title
+  .row
+    if posts
+      each post, i in posts
+        .col-md-4.col-sm-6
+          .card(style="width: 18rem;")
+            img.card-img-top(src="/images/download.svg", alt="Card image cap")  
+            .card-body
+              h5.card-title= post.title
+              p.card-text
+                != truncateText(post.body, 100) 
+              div
+                small.text-muted 
+                  strong Author:
+                  = post.author
+              div
+                small.text-muted
+                  strong Category:
+                  a(href='/categories/show/#{post.category}') #{post.category}
+              div
+                small.text-muted
+                  strong date:
+                    = moment(post.date).format('DD-MM-YYYY')
+              br
+              a.float-right.card-link(href="/posts/show/#{post._id}") Read More
+    else
+      blockquote.blockquote.text-center
+        .lead There are no posts to display.
